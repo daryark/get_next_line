@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 15:52:38 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/02 20:45:51 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/03 21:10:24 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*p;
+	size_t	i;
 
 	p = (void *)malloc(size * count);
 	if (!p)
 		return (NULL);
-	ft_bzero(p, (count * size));
+	i = 0;
+	while (i < (count * size))
+		*(unsigned char *)(p + i++) = '\0';
 	return (p);
 }
 
@@ -35,34 +38,47 @@ t_list	*ft_lstnew(void *content)
 	return (node);
 }
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
 //if there is no list, the last will be NULL, so no \n char inside
-int	find_newline(char	*last)
+int	find_newline(t_list	*lst)
 {
-	if (!last)
+	if (!lst)
 		return (0);
-	while (*last->content && *last->content != '\n')
-		*last->content++;
-	if (*last->content && *last->content == '\n')
+	while (lst->next)
+		lst = lst->next;
+	while (lst->content && *lst->content != '\n')
+		lst->content++;
+	if (lst->content && *lst->content == '\n')
 		return (1);
 	return (0);
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_list	*last;
-
 	if (!*lst)
 		*lst = new;
 	else
 	{
-		last = ft_lstlast(*lst);
-		last->next = new;
+		while ((*lst)->next)
+			*lst = (*lst)->next;
+		(*lst)->next = new;
 	}
+}
+
+int	lst_content_len(t_list *lst)
+{
+	int		size;
+
+	size = 0;
+	while (lst)
+	{
+		while (lst->content && *lst->content != '\n')
+		{
+			size++;
+			lst->content++;
+		}
+		if (lst->content && *lst->content == '\n')
+			return (size);
+		lst = lst->next;
+	}
+	return (size);
 }

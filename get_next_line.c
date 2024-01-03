@@ -6,30 +6,52 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 02:42:42 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/02 20:48:06 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/03 21:57:15 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-//create list first and all next nodes while line is the same
-void	create_list(char **lst, int fd)
+char	*get_line(t_list *lst)
 {
 	char	*buf;
-	char	*read_str;
+	int		len;
+	int		i;
 
-	while (!find_newline(ft_lstlast(lst)))
+	len = lst_content_len(lst);
+	buf = ft_calloc(sizeof(char), len + 1);
+	if (!buf)
+		return (NULL);
+	i = 0;
+	while (i < len)
 	{
-		buf = ft_calloc(BUFFER_SIZE + 1);
+		if (!*lst->content)
+			lst = lst->next;
+		buf[i++] = *lst->content++;
+	}
+	return (buf);
+}
+
+//create list first and all next nodes while line is the same
+void	create_list(t_list **lst, int fd)
+{
+	char	*buf;
+	int		chars_read;
+
+	while (!find_newline(*lst))
+	{
+		buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		if (!buf)
-			return (NULL);
-		read_str = read(fd, buf, BUFFER_SIZE);
-		if (!read_str)
+			return ;
+		chars_read = read(fd, buf, BUFFER_SIZE);
+		printf("chars_read: %d\n", chars_read);
+		printf("lst->content: %p\n", *lst);
+		if (!chars_read)
 		{
 			free(buf);
 			return ;
 		}
-		ft_lstadd_back(&lst, ft_lstnew(buf));
+		ft_lstadd_back(lst, ft_lstnew(buf));
 	}
 }
 
@@ -43,7 +65,7 @@ char	*get_next_line(int fd)
 	create_list(&lst, fd);
 	if (lst == NULL)
 		return (NULL);
-	line =  get_line(lst);
-	prep_nextline(lst);
+	line = get_line(lst);
+	// prep_nextline(lst);
 	return (line);
 }
