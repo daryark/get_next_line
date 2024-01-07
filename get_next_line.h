@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 02:38:45 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/03 21:53:58 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:29:20 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ int		lst_content_len(t_list *lst);
 
 void	*ft_calloc(size_t count, size_t size);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstnew(void *content);
+t_list	*ft_lstnew(char *content);
+
+
+char    *ft_strdup(const char *s1);
 
 #endif
