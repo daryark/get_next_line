@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 02:42:42 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/08 19:46:07 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/08 23:13:59 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,28 @@ char	*ft_strdup(const char *s1)
 
 void	prep_nextline(t_list **lst)
 {
-	t_list	*head;
 	int		i;
 	char	*new_s;
+	t_list	*tmp;
 
-	head = *lst;
-	while (head)
+	while (*lst)
 	{
 		i = 0;
 		while ((*lst)->content[i])
 		{
-			if (head->content[i] == '\n' && head->content[i + 1])
+			if ((*lst)->content[i] == '\n' && (*lst)->content[i + 1])
 			{
-				new_s = ft_strdup(&(head->content[i + 1]));
-				free(head->content);
-				head->content = new_s;
+				new_s = ft_strdup(&((*lst)->content[i + 1]));
+				free((*lst)->content);
+				(*lst)->content = new_s;
 				return ;
 			}
 			i++;
 		}
-		head = (*lst)->next;
+		tmp = (*lst)->next;
 		free((*lst)->content);
 		free(*lst);
-		*lst = head;
+		*lst = tmp;
 	}
 	*lst = NULL;
 }
@@ -84,7 +83,6 @@ char	*get_line(t_list *lst)
 	int		l;
 
 	len = lst_content_len(lst);
-	printf("len %d\n", len);
 	buf = ft_calloc(sizeof(char), len + 1);
 	if (!buf)
 		return (NULL);
@@ -99,7 +97,6 @@ char	*get_line(t_list *lst)
 		}
 		buf[b++] = lst->content[l++];
 	}
-	// printf("str:")
 	return (buf);
 }
 
@@ -117,7 +114,6 @@ void	create_list(t_list **lst, int fd)
 		chars_read = read(fd, buf, BUFFER_SIZE);
 		if (!chars_read)
 		{
-			printf(RED "no chars read\n" RESET_COLOR);
 			free(buf);
 			return ;
 		}

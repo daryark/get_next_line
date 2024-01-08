@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 15:52:38 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/08 19:42:50 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/08 23:30:32 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,36 +45,25 @@ int	find_newline(t_list	*lst)
 	return (0);
 }
 
-// t_list	*ft_lstnew(char *content)
-// {
-// 	t_list	*node;
-
-// 	node = malloc(sizeof(t_list));
-// 	if (!node)
-// 		return (NULL);
-// 	node->content = content;
-// 	node->next = NULL;
-// 	return (node);
-// }
-
 void	ft_lstadd_back(t_list **lst, char *buf)
 {
 	t_list	*node;
+	t_list	*head;
 
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return ;
-	if (!*lst)
+	head = *lst;
+	if (!head)
 		*lst = node;
 	else
 	{
-		while ((*lst)->next)
-			*lst = (*lst)->next;
-		(*lst)->next = node;
+		while (head->next)
+			head = head->next;
+		head->next = node;
 	}
 	node->content = buf;
 	node->next = NULL;
-	// printf("lst after addback: %s\n", (*lst)->content);
 }
 
 int	lst_content_len(t_list *lst)
@@ -92,9 +81,8 @@ int	lst_content_len(t_list *lst)
 			content_ptr++;
 		}
 		if (*content_ptr && *content_ptr == '\n')
-			return (size);
+			return (++size);
 		lst = lst->next;
 	}
-	printf("size: %d\n", size);
 	return (size);
 }
