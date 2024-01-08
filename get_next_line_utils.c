@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 15:52:38 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/07 20:27:26 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:42:50 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,47 +26,55 @@ void	*ft_calloc(size_t count, size_t size)
 	return (p);
 }
 
-t_list	*ft_lstnew(char *content)
-{
-	t_list	*node;
-
-	node = malloc(sizeof(t_list));
-	if (!node)
-		return (NULL);
-	node->content = content;
-	node->next = NULL;
-	return (node);
-}
-
 //if there is no list, the last will be NULL, so no \n char inside
 int	find_newline(t_list	*lst)
 {
-	char	*content_ptr;
+	int		i;
 
 	while (lst)
 	{
-		content_ptr = lst->content;
-		while (*content_ptr)
+		i = 0;
+		while (lst->content[i])
 		{
-			if (*content_ptr == '\n')
+			if (lst->content[i] == '\n')
 				return (1);
-			content_ptr++;
+			i++;
 		}
 		lst = lst->next;
 	}
 	return (0);
 }
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+// t_list	*ft_lstnew(char *content)
+// {
+// 	t_list	*node;
+
+// 	node = malloc(sizeof(t_list));
+// 	if (!node)
+// 		return (NULL);
+// 	node->content = content;
+// 	node->next = NULL;
+// 	return (node);
+// }
+
+void	ft_lstadd_back(t_list **lst, char *buf)
 {
+	t_list	*node;
+
+	node = malloc(sizeof(t_list));
+	if (!node)
+		return ;
 	if (!*lst)
-		*lst = new;
+		*lst = node;
 	else
 	{
 		while ((*lst)->next)
 			*lst = (*lst)->next;
-		(*lst)->next = new;
+		(*lst)->next = node;
 	}
+	node->content = buf;
+	node->next = NULL;
+	// printf("lst after addback: %s\n", (*lst)->content);
 }
 
 int	lst_content_len(t_list *lst)
@@ -87,5 +95,6 @@ int	lst_content_len(t_list *lst)
 			return (size);
 		lst = lst->next;
 	}
+	printf("size: %d\n", size);
 	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 20:47:54 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/07 16:52:57 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:33:43 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@ int	main(void)
 
 	size = 0;
 	fd = open("test.txt", O_RDONLY);
-		ln = get_next_line(fd);
-		printf("%d->%s", ++size, ln);
-	while (ln)
+	while (ln = get_next_line(fd))
 	{
-		ln = get_next_line(fd);
-		printf("%d->%s", ++size, ln);
+		printf("%d->%s\n\n\n", ++size, ln);
 	}
 	return (0);
 }

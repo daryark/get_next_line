@@ -6,11 +6,46 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 02:42:42 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/07 21:27:19 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:46:07 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	while (lst && lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*buffer;
+	int		i;
+
+	buffer = (char *)malloc(sizeof(char) * ft_strlen(s1) + 1);
+	if (!buffer)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		buffer[i] = s1[i];
+		i++;
+	}
+	buffer[i] = '\0';
+	return (buffer);
+}
 
 void	prep_nextline(t_list **lst)
 {
@@ -19,21 +54,16 @@ void	prep_nextline(t_list **lst)
 	char	*new_s;
 
 	head = *lst;
-	while (*lst)
+	while (head)
 	{
 		i = 0;
 		while ((*lst)->content[i])
 		{
-			printf("START POINT: %c\n", (*lst)->content[i]);
-			printf("COntent: %c\n", (*lst)->content[i + 1]);
-			printf("POINTER: %p\n", (*lst)->content);
-			printf("STRING: %s\n", (*lst)->content);
-			if ((*lst)->content[i] == '\n' && (*lst)->content[i + 1])
+			if (head->content[i] == '\n' && head->content[i + 1])
 			{
-				if ((*lst)->content[i + 1])
-					new_s = &((*lst)->content[i + 1]);
-				free((*lst)->content);
-				(*lst)->content = new_s;
+				new_s = ft_strdup(&(head->content[i + 1]));
+				free(head->content);
+				head->content = new_s;
 				return ;
 			}
 			i++;
@@ -50,20 +80,26 @@ char	*get_line(t_list *lst)
 {
 	char	*buf;
 	int		len;
-	int		i;
+	int		b;
+	int		l;
 
 	len = lst_content_len(lst);
-	printf("\nlen: %d\n", len);
+	printf("len %d\n", len);
 	buf = ft_calloc(sizeof(char), len + 1);
 	if (!buf)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	b = 0;
+	l = 0;
+	while (b < len)
 	{
-		if (!*lst->content)
+		if (!lst->content[l])
+		{
 			lst = lst->next;
-		buf[i++] = *lst->content++;
+			l = 0;
+		}
+		buf[b++] = lst->content[l++];
 	}
+	// printf("str:")
 	return (buf);
 }
 
@@ -81,10 +117,11 @@ void	create_list(t_list **lst, int fd)
 		chars_read = read(fd, buf, BUFFER_SIZE);
 		if (!chars_read)
 		{
+			printf(RED "no chars read\n" RESET_COLOR);
 			free(buf);
 			return ;
 		}
-		ft_lstadd_back(lst, ft_lstnew(buf));
+		ft_lstadd_back(lst, buf);
 	}
 }
 
@@ -93,14 +130,19 @@ char	*get_next_line(int fd)
 	static t_list	*lst;
 	char			*line;
 
-	lst = NULL;
 	if (fd < 0 || read(fd, &lst, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	create_list(&lst, fd);
 	if (lst == NULL)
 		return (NULL);
-	printf("STRING BEFORE: %s\n", lst->content);
 	line = get_line(lst);
 	prep_nextline(&lst);
 	return (line);
 }
+
+		// 		t_list *head = lst;
+		// while (head)
+		// {
+		// 	printf("content: %s\n", (head)->content);
+		// 	head = head->next;
+		// }
