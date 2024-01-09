@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/30 02:42:42 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/09 17:35:46 by dyarkovs         ###   ########.fr       */
+/*   Created: 2024/01/09 14:56:14 by dyarkovs          #+#    #+#             */
+/*   Updated: 2024/01/09 17:35:59 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	prep_nextline(t_list **lst)
 {
@@ -104,15 +104,19 @@ void	create_list(t_list **lst, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*lst;
+	static t_list	*lst[OPEN_MAX];
 	char			*line;
 
-	if (fd < 0 || read(fd, &lst, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || read(fd, &lst[fd], 0) < 0 || BUFFER_SIZE <= 0)
+	{
+		if (lst[fd])
+			clean_node(&lst[fd]);
 		return (NULL);
-	create_list(&lst, fd);
-	if (lst == NULL)
+	}
+	create_list(&lst[fd], fd);
+	if (lst[fd] == NULL)
 		return (NULL);
-	line = do_line(lst);
-	prep_nextline(&lst);
+	line = do_line(lst[fd]);
+	prep_nextline(&lst[fd]);
 	return (line);
 }
