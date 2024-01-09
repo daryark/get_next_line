@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 15:52:38 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/08 23:30:32 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:49:36 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@ void	*ft_calloc(size_t count, size_t size)
 	return (p);
 }
 
+char	*ft_strdup(const char *s1)
+{
+	char	*buf;
+	int		i;
+	int		len;
+
+	i = -1;
+	len = 0;
+	while (s1[++i])
+		len++;
+	buf = ft_calloc(sizeof(char), len + 1);
+	if (!buf)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		buf[i] = s1[i];
+	return (buf);
+}
+
 //if there is no list, the last will be NULL, so no \n char inside
 int	find_newline(t_list	*lst)
 {
@@ -33,12 +52,11 @@ int	find_newline(t_list	*lst)
 
 	while (lst)
 	{
-		i = 0;
-		while (lst->content[i])
+		i = -1;
+		while (lst->cont[++i])
 		{
-			if (lst->content[i] == '\n')
+			if (lst->cont[i] == '\n')
 				return (1);
-			i++;
 		}
 		lst = lst->next;
 	}
@@ -62,25 +80,25 @@ void	ft_lstadd_back(t_list **lst, char *buf)
 			head = head->next;
 		head->next = node;
 	}
-	node->content = buf;
+	node->cont = buf;
 	node->next = NULL;
 }
 
-int	lst_content_len(t_list *lst)
+int	lst_cont_len(t_list *lst)
 {
 	int		size;
-	char	*content_ptr;
+	char	*cont_ptr;
 
 	size = 0;
 	while (lst)
 	{
-		content_ptr = lst->content;
-		while (*content_ptr && *content_ptr != '\n')
+		cont_ptr = lst->cont;
+		while (*cont_ptr && *cont_ptr != '\n')
 		{
 			size++;
-			content_ptr++;
+			cont_ptr++;
 		}
-		if (*content_ptr && *content_ptr == '\n')
+		if (*cont_ptr && *cont_ptr == '\n')
 			return (++size);
 		lst = lst->next;
 	}
