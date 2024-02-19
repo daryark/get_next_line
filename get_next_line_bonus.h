@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 14:54:35 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/21 21:56:41 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:24:51 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <limits.h>
 
 typedef struct s_gnl_lst
 {

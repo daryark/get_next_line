@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 14:56:14 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/21 21:56:53 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:24:43 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	create_list(t_gnl_lst **lst, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_gnl_lst	*lst[OPEN_MAX];
+	static t_gnl_lst	*lst[1024];
 	char				*line;
 
 	if (fd < 0 || read(fd, &lst[fd], 0) < 0 || BUFFER_SIZE <= 0)
