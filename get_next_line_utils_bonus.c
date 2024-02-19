@@ -6,25 +6,13 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 17:02:22 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/09 17:02:24 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:57:06 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 15:52:38 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/09 17:01:34 by dyarkovs         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "get_next_line_bonus.h"
 
-#include "get_next_line.h"
-
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc_gnl(size_t count, size_t size)
 {
 	void	*p;
 	size_t	i;
@@ -38,7 +26,7 @@ void	*ft_calloc(size_t count, size_t size)
 	return (p);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup_gnl(const char *s1)
 {
 	char	*buf;
 	int		i;
@@ -48,7 +36,7 @@ char	*ft_strdup(const char *s1)
 	len = 0;
 	while (s1[++i])
 		len++;
-	buf = ft_calloc(sizeof(char), len + 1);
+	buf = ft_calloc_gnl(sizeof(char), len + 1);
 	if (!buf)
 		return (NULL);
 	i = -1;
@@ -58,9 +46,9 @@ char	*ft_strdup(const char *s1)
 }
 
 //cleans curr node and moves head to the next lst
-void	clean_node(t_list **lst)
+void	clean_node(t_gnl_lst **lst)
 {
-	t_list	*tmp;
+	t_gnl_lst	*tmp;
 
 	tmp = (*lst)->next;
 	free((*lst)->cont);
@@ -69,7 +57,7 @@ void	clean_node(t_list **lst)
 }
 
 //if there is no list, the last will be NULL, so no \n char inside
-int	find_newline(t_list	*lst)
+int	find_newline(t_gnl_lst	*lst)
 {
 	int		i;
 
@@ -86,7 +74,7 @@ int	find_newline(t_list	*lst)
 	return (0);
 }
 
-int	lst_cont_len(t_list *lst)
+int	lst_cont_len(t_gnl_lst *lst)
 {
 	int		size;
 	char	*cont_ptr;

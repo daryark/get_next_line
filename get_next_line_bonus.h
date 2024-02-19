@@ -6,7 +6,7 @@
 /*   By: dyarkovs <dyarkovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 14:54:35 by dyarkovs          #+#    #+#             */
-/*   Updated: 2024/01/09 16:59:11 by dyarkovs         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:56:41 by dyarkovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@
 # include <fcntl.h>
 # include <limits.h>
 
-typedef struct s_list
+typedef struct s_gnl_lst
 {
-	char			*cont;
-	struct s_list	*next;
-}	t_list;
+	char				*cont;
+	struct s_gnl_lst	*next;
+}	t_gnl_lst;
 
 char	*get_next_line(int fd);
-void	create_list(t_list **lst, int fd);
-char	*do_line(t_list *lst);
-void	prep_nextline(t_list **lst);
-void	ft_lstadd_back(t_list **lst, char	*buf);
+void	create_list(t_gnl_lst **lst, int fd);
+char	*do_line(t_gnl_lst *lst);
+void	prep_nextline(t_gnl_lst **lst);
+void	ft_lstadd(t_gnl_lst **lst, char	*buf);
 
-void	*ft_calloc(size_t count, size_t size);
-char	*ft_strdup(const char *s1);
-void	clean_node(t_list **lst);
-int		find_newline(t_list	*lst);
-int		lst_cont_len(t_list *lst);
+void	*ft_calloc_gnl(size_t count, size_t size);
+char	*ft_strdup_gnl(const char *s1);
+void	clean_node(t_gnl_lst **lst);
+int		find_newline(t_gnl_lst	*lst);
+int		lst_cont_len(t_gnl_lst *lst);
 
 #endif
